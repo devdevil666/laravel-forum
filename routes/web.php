@@ -14,7 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/threads', 'ThreadsController@index');
+Route::get('/threads', 'ThreadsController@index')->name('all_threads');
 Route::get('/threads/{thread}', 'ThreadsController@show');
 
 Auth::routes();
