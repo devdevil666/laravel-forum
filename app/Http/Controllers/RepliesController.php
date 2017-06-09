@@ -43,7 +43,7 @@ class RepliesController extends Controller
      * @return \Illuminate\Http\Response
      * @internal param Request $request
      */
-    public function store(Thread $thread)
+    public function store($channelId, Thread $thread)
     {
         $thread->addReply([
             'body' => request('body'),

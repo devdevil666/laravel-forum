@@ -16,7 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/threads/{thread}/replies', 'RepliesController@store');
+Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
 //Route::resource('threads', 'ThreadsController');
 Route::get('/threads', 'ThreadsController@index')->name('all_threads');
 Route::post('/threads', 'ThreadsController@store');
