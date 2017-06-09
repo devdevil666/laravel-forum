@@ -32,4 +32,12 @@ class CreateThreadsTest extends TestCase
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
+
+    /** @test */
+    public function guest_not()
+    {
+        $this->expectException(AuthenticationException::class);
+
+        $this->get('/threads/create');
+    }
 }
