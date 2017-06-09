@@ -22,7 +22,7 @@ class ParticipateInForumTest extends TestCase
         $thread = factory(Thread::class)->create();
 
         $repl = factory(Reply::class)->create();
-        $this->post("{$thread->path()}/replies", $repl->toArray());
+        $this->post("/threads/{$thread->id}/replies", $repl->toArray());
     }
 
     /** @test */
@@ -32,7 +32,7 @@ class ParticipateInForumTest extends TestCase
         $thread = factory(Thread::class)->create();
 
         $repl = factory(Reply::class)->make();
-        $this->post("{$thread->path()}/replies", $repl->toArray());
+        $this->post("/threads/{$thread->id}/replies", $repl->toArray());
 
         $this->get($thread->path())->assertSee($repl->body);
     }
