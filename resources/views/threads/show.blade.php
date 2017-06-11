@@ -34,7 +34,7 @@
         @if(auth()->check())
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <form action="/threads/{{ $thread->id }}/replies" method="post">
+                <form action="{{ route('store_reply', [$thread->channel, $thread]) }}" method="post">
                     {{ csrf_field() }}
                     <div class="form-group">
                         <textarea name="body" id="body" class="form-control" placeholder="Body"></textarea>

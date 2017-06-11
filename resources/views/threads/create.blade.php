@@ -10,18 +10,33 @@
                     <div class="panel-body">
                         <form action="/threads" method="post">
                             {{ csrf_field() }}
+
+                            <div class="form-group">
+                                <label for="channel_id">Channel</label>
+                                <select class="form-control" name="channel_id" id="channel_id">
+                                    <option value="">Choose</option>
+                                    @foreach(\App\Channel::all() as $channel)
+                                        <option value="{{ $channel->id }}">{{ $channel->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input type="text" name="title" id="title" class="form-control" value="">
+                                <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}">
                             </div>
 
                             <div class="form-group">
                                 <label for="body">Body</label>
-                                <textarea name="body" id="body" class="form-control"></textarea>
+                                <textarea name="body" id="body" class="form-control">{{ old('body') }}</textarea>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Create</button>
                         </form>
+
+                        <p>
+                            @include('errors')
+                        </p>
                     </div>
                 </div>
             </div>
