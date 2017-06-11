@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class CustomViewServiseProvider extends ServiceProvider
+class CustomViewServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.

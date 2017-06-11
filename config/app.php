@@ -179,7 +179,7 @@ return [
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
-        \App\Providers\CustomViewServiseProvider::class
+        \App\Providers\CustomViewServiceProvider::class
 
     ],
 
