@@ -26,4 +26,3 @@ Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
 
 Route::get('home', 'HomeController@index')->name('home');
 
-
