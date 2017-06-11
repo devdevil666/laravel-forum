@@ -179,6 +179,8 @@ return [
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
+        \App\Providers\CustomViewServiseProvider::class
+
     ],
 
     /*
