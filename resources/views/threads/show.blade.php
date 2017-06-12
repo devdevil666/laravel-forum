@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <a href="#">{{ $thread->creator->name }}</a> posted {{ $thread->title }}</div>
@@ -17,34 +17,40 @@
                             <hr>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        {{--replyes--}}
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-
-                @foreach($thread->replies as $reply)
+                @foreach($replies as $reply)
                     @include('threads.reply')
                 @endforeach
 
-            </div>
-        </div>
+                {{ $replies->links() }}
 
-        @if(auth()->check())
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <form action="{{ route('store_reply', [$thread->channel, $thread]) }}" method="post">
-                    {{ csrf_field() }}
-                    <div class="form-group">
-                        <textarea name="body" id="body" class="form-control" placeholder="Body"></textarea>
+                @if(auth()->check())
+                    <form action="{{ route('store_reply', [$thread->channel, $thread]) }}" method="post">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <textarea name="body" id="body" class="form-control" placeholder="Body"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-default">Reply</button>
+                    </form>
+                @endif
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <article>
+                            <div class="body">
+                                {{ $thread->created_at->diffForHumans() }}
+                                by <a href="#">{{ $thread->creator->name }}</a>
+                                <br>
+                                {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies_count) }}.
+                            </div>
+                        </article>
                     </div>
+                </div>
 
-                    <button type="submit" class="btn btn-default">Reply</button>
-                </form>
             </div>
         </div>
-        @endif
 
     </div>
 @endsection
