@@ -2,6 +2,7 @@
 namespace App\Filters;
 
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
 abstract class Filters
@@ -10,6 +11,8 @@ abstract class Filters
      * @var Request
      */
     protected $request;
+
+    /** @var  Builder */
     protected $builder;
 
     protected $filters = [];

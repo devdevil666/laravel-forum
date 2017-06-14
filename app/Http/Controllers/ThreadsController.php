@@ -6,6 +6,7 @@ use App\Channel;
 use App\Filters\ThreadFilters;
 use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ThreadsController extends Controller
 {
@@ -19,11 +20,12 @@ class ThreadsController extends Controller
      *
      * @param Channel $channel
      * @param ThreadFilters $filters
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|Collection
      * @internal param null $channelSlug
      */
     public function index(Channel $channel, ThreadFilters $filters)
     {
+        /** @var Collection $threads */
         $threads = Thread::latest()->filter($filters);
 
         if ($channel->exists) {
@@ -31,6 +33,10 @@ class ThreadsController extends Controller
         }
 
         $threads = $threads->get();
+
+        if (request()->wantsJson()) {
+            return $threads;
+        }
 
         return view('threads.index', compact('threads'));
     }
