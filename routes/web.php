@@ -27,4 +27,5 @@ Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store')->na
 Route::post('replies/{reply}/favorites', "FavoritesController@store")->name('submit_reply');
 
 Route::get('home', 'HomeController@index')->name('home');
+Route::get('profiles/{user}', 'ProfilesController@show')->name('user_profile');
 
