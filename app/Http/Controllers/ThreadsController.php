@@ -26,7 +26,7 @@ class ThreadsController extends Controller
     public function index(Channel $channel, ThreadFilters $filters)
     {
         /** @var Collection $threads */
-        $threads = Thread::with('channel')->latest()->filter($filters);
+        $threads = Thread::latest()->filter($filters);
 
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
@@ -81,7 +81,7 @@ class ThreadsController extends Controller
      */
     public function show($channel, Thread $thread)
     {
-        $replies = $thread->replies()->paginate(1);
+        $replies = $thread->replies()->paginate(5);
         return view('threads.show', compact('thread', 'replies'));
     }
 
