@@ -6,7 +6,9 @@ use App\Channel;
 use App\Reply;
 use App\Thread;
 use App\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -83,17 +85,25 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    public function get_cannot_delete_threads()
+    public function unlogged_users_mau_not_delete_threads()
     {
         $this->expectException(AuthenticationException::class);
         $thread = create(Thread::class);
 
-        $this->delete('DELETE', $thread->path());
+        $this->delete($thread->path());
     }
 
     /** @test */
-    public function thread_may_only_be_deleted_by_those_who_have_permissions()
+    public function user_can_delete_his_threads_only()
     {
+        $this->expectException(AuthorizationException::class);
+        $this->signIn();
+
+        $user = create(User::class);
+        $thread = create(Thread::class, ['user_id' => $user->id]);
+
+        $this->delete($thread->path())
+            ->assertStatus(403);
 
     }
 
@@ -101,7 +111,7 @@ class CreateThreadsTest extends TestCase
     public function thread_can_be_deleted()
     {
         $this->signIn();
-        $thread = create(Thread::class);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
 
         $reply = create(Reply::class, ['thread_id' => $thread->id]);
 
