@@ -10,23 +10,16 @@
                     <h1>{{ $profileUser->name }}</h1>
                 </div>
 
-                @foreach($threads as $thread)
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <a href="#">{{ $thread->creator->name }}</a> posted {{ $thread->title }}</div>
+                @foreach($activities as $date => $activity)
 
-                        <div class="panel-body">
-                            <article>
-                                <div class="body">
-                                    {{ $thread->body }}
-                                </div>
-                            </article>
-                            <hr>
-                        </div>
-                    </div>
+                    <h3 class="page-header">{{ $date }}</h3>
+                    @foreach($activity as $record)
+                        @include("profiles.activities.{$record->type}", ['activity' => $record])
+                    @endforeach
+
                 @endforeach
 
-                {{ $threads->links() }}
+                {{--{{ $threads->links() }}--}}
             </div>
         </div>
     </div>
