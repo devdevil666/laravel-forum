@@ -24,10 +24,11 @@ class ProfilesTest extends TestCase
     /** @test */
     public function profile_display_threads_associated_by_user()
     {
-        $user = create(User::class);
+        $this->signIn();
 
-        $thread = create(Thread::class, ['user_id' => $user->id]);
-        $this->get("/profiles/{$user->name}")
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $userName = auth()->user()->name;
+        $this->get("/profiles/{$userName}")
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
