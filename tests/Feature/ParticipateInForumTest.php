@@ -35,4 +35,20 @@ class ParticipateInForumTest extends TestCase
         //$this->get($thread->path())
           //  ->assertSee($reply->body);
     }
+
+    /** @test */
+    public function unlogged_users_cannot_delete_replies()
+    {
+        $this->signIn();
+        $reply = create(Reply::class, [
+            'user_id' => auth()->id()
+        ]);
+
+        $this->delete('/replies/' . $reply->id)
+            ->assertStatus(302);
+
+        $this->assertDatabaseMissing('replies', [
+            'id' => $reply->id
+        ]);
+    }
 }
