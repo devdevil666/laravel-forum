@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Reply;
 use App\Thread;
 use App\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -50,5 +51,28 @@ class ParticipateInForumTest extends TestCase
         $this->assertDatabaseMissing('replies', [
             'id' => $reply->id
         ]);
+    }
+
+    /** @test */
+    public function authorisedUsersCanUpdateReply()
+    {
+        $this->signIn();
+        $reply = create(Reply::class, [
+            'user_id' => auth()->id()
+        ]);
+        $this->patch("/replies/{$reply->id}", ['body' => 'New body']);
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => 'New body']);
+    }
+
+    /** @test */
+    public function unAuthorisedUsersCanNotUpdateReply()
+    {
+        $this->expectException(AuthenticationException::class);
+
+        $reply = create(Reply::class);
+        $this->patch("/replies/{$reply->id}", ['body' => 'New body']);
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id, 'body' => 'New body']);
     }
 }
